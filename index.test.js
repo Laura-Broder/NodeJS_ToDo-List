@@ -1,82 +1,170 @@
-// const taskArray = require("./index").taskArray;
-const ToDo = require("./index").ToDo;
+const ToDoList = require("./index").ToDoList;
+const ToDoItem = require("./index").ToDoItem;
 
 describe("NodeJS_ToDo", () => {
-  beforeEach(ToDo.clearList);
+  describe("init new task item", () => {
+    it("init with no arguments", () => {
+      const result = new ToDoItem();
+      const expected = {
+        content: "Empty task",
+        done: false,
+        index: 0,
+      };
+      expect(result).toEqual(expected);
+    });
+    it("init with content and index", () => {
+      const result = new ToDoItem("test", 3);
+      const expected = {
+        content: "test",
+        done: false,
+        index: 3,
+      };
+      expect(result).toEqual(expected);
+    });
+  });
+  describe("init new array", () => {
+    it("init with empty array", () => {
+      const newList = new ToDoList([]);
+      const result = newList.taskArray.length;
+      expect(result).toBe(0);
+    });
+    it("init with undefined array", () => {
+      const newList = new ToDoList();
+      const result = newList.taskArray.length;
+      expect(result).toBe(0);
+    });
+    it("init with an array with one obj", () => {
+      const testObj = { content: "test", done: false, index: 3 };
+      const newList = new ToDoList([testObj]);
+      const result = newList.taskArray.length;
+      expect(result).toBe(1);
+    });
+  });
   describe("clearList", () => {
-    it("should return 0", () => {
-      ToDo.addNewTask("Do the NodeJS ToDo list assignment");
-      const result = ToDo.clearList();
+    it("clear an empty array", () => {
+      const newList = new ToDoList();
+      const result = newList.clearList();
+      expect(result).toBe(0);
+    });
+    it("clear an empty array", () => {
+      const testObj = { content: "test", done: false, index: 3 };
+      const newList = new ToDoList([testObj]);
+      const result = newList.clearList();
       expect(result).toBe(0);
     });
   });
   describe("addNewTask", () => {
-    it("should return there is no content in the new task", () => {
-      const result = ToDo.addNewTask("");
+    it("add a task with an empty string", () => {
+      const newList = new ToDoList();
+      const result = newList.addNewTask("");
       expect(result).toMatch("The task has no content");
     });
-    it("should add a new task to the array", () => {
-      const result = ToDo.addNewTask("Do the NodeJS ToDo list assignment");
+    it("add a task with undefined content", () => {
+      const newList = new ToDoList();
+      const result = newList.addNewTask();
+      expect(result).toMatch("The task has no content");
+    });
+    it("add a new task to the array", () => {
+      const newList = new ToDoList();
+      const result = newList.addNewTask("test task");
       expect(result).toBe(1);
     });
   });
 
   describe("displayList", () => {
-    it("should return the list is empty", () => {
-      const result = ToDo.displayList();
+    it("display an empty array", () => {
+      const newList = new ToDoList();
+      const result = newList.displayList();
       expect(result).toMatch("No tasks in your list.");
     });
-    it("should log the list of tasks", () => {
-      ToDo.addNewTask("Do the NodeJS ToDo list assignment");
-      const result = ToDo.displayList();
-      expect(result).toBe(1);
+    it("display the list of tasks", () => {
+      const testArray = [
+        { content: "test1" },
+        { content: "test2" },
+        { content: "test3" },
+      ];
+      const newList = new ToDoList(testArray);
+      const result = newList.displayList();
+      const expected = testArray.length;
+      expect(result.length).toBe(expected);
     });
   });
 
   describe("deleteTask", () => {
-    it("should return the index is non existent", () => {
-      const result = ToDo.deleteTask(1);
+    it("delete an invalid index task", () => {
+      const newList = new ToDoList();
+      const result = newList.deleteTask(2);
       expect(result).toMatch("there is no such task number");
     });
-    it("should delete a task by it's index", () => {
-      ToDo.addNewTask("Do the NodeJS ToDo list assignment");
-      const result = ToDo.deleteTask(1);
+    it("delete a task by index", () => {
+      const testArray = [
+        { content: "test1" },
+        { content: "test2" },
+        { content: "test3" },
+      ];
+      const newList = new ToDoList(testArray);
+      const result = newList.deleteTask(1);
       expect(result).toBe(1);
     });
   });
 
   describe("markDone", () => {
-    it("should return the index is non existent", () => {
-      const result = ToDo.markDone(1);
+    it("mark done of invalid task index", () => {
+      const testArray = [
+        { content: "test1" },
+        { content: "test2" },
+        { content: "test3" },
+      ];
+      const newList = new ToDoList(testArray);
+      const result = newList.markDone(5);
       expect(result).toMatch("there is no such task number");
     });
-    it("should return the task is already marked done", () => {
-      ToDo.addNewTask("Do the NodeJS ToDo list assignment");
-      ToDo.markDone(1);
-      const result = ToDo.markDone(1);
+    it("mark done on an already done task", () => {
+      const testArray = [
+        { content: "test1", done: true },
+        { content: "test2" },
+        { content: "test3" },
+      ];
+      const newList = new ToDoList(testArray);
+      const result = newList.markDone(1);
       expect(result).toMatch("The task is already marked done");
     });
-    it("should mark a task done by it's index", () => {
-      ToDo.addNewTask("Do the NodeJS ToDo list assignment");
-      const result = ToDo.markDone(1);
+    it("mark done by task index", () => {
+      const testArray = [
+        { content: "test1" },
+        { content: "test2" },
+        { content: "test3" },
+      ];
+      const newList = new ToDoList(testArray);
+      const result = newList.markDone(1);
       expect(result).toBe(1);
     });
   });
 
   describe("unMarkDone", () => {
-    it("should return the index is non existent", () => {
-      const result = ToDo.unMarkDone(1);
+    it("un-mark done of invalid task index", () => {
+      const newList = new ToDoList();
+      const result = newList.unMarkDone(1);
       expect(result).toMatch("there is no such task number");
     });
-    it("should return the task is not marked done", () => {
-      ToDo.addNewTask("Do the NodeJS ToDo list assignment");
-      const result = ToDo.unMarkDone(1);
+    it("un-mark a task that isn't done", () => {
+      const testArray = [
+        { content: "test1" },
+        { content: "test2" },
+        { content: "test3" },
+      ];
+      const newList = new ToDoList(testArray);
+      const result = newList.unMarkDone(1);
       expect(result).toMatch("The task was not marked done yet");
     });
-    it("should mark a task done by it's index", () => {
-      ToDo.addNewTask("Do the NodeJS ToDo list assignment");
-      ToDo.markDone(1);
-      const result = ToDo.unMarkDone(1);
+    it("un-mark a done task by index", () => {
+      const testArray = [
+        { content: "test1", done: true },
+        { content: "test2" },
+        { content: "test3" },
+      ];
+      const newList = new ToDoList(testArray);
+      const result = newList.unMarkDone(1);
       expect(result).toBeTruthy();
     });
   });
