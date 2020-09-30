@@ -1,3 +1,8 @@
+// refactoring needed:
+// 1. change the return values to be same type from each function.
+// 2. take in consideration return values need to be used by an outside  user. (no strings of msgs!)
+// 3. in errors throw new error("msg")
+
 // define Task class
 class ToDoItem {
   constructor(content = "Empty task", index = 0, done = false) {
@@ -12,13 +17,13 @@ class ToDoList {
   constructor(taskArray = []) {
     this.taskArray = taskArray;
   }
-  addNewTask = (content) => {
+  addNewTask = (content, done = false) => {
     // if content is empty
-    if (content === ("" || undefined)) {
+    if (!content) {
       return "The task has no content";
     }
     const index = this.taskArray.length;
-    return this.taskArray.push(new ToDoItem(content, index));
+    return this.taskArray.push(new ToDoItem(content, index, done));
   };
   displayList = () => {
     // if list is empty
