@@ -1,0 +1,26 @@
+{
+  "name": "nodejs_todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^26.4.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Laura-Broder/NodeJS_ToDo-List.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Laura-Broder/NodeJS_ToDo-List/issues"
+  },
+  "homepage": "https://github.com/Laura-Broder/NodeJS_ToDo-List#readme"
+}
